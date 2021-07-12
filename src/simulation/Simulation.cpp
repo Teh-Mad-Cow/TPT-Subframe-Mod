@@ -3095,6 +3095,8 @@ void Simulation::kill_part(int i)//kills particle number i
 {
 	if (i < 0 || i >= NPART)
 		return;
+
+	debug_interestingChangeOccurred = true;
 	
 	int x = (int)(parts[i].x + 0.5f);
 	int y = (int)(parts[i].y + 0.5f);
@@ -3128,6 +3130,8 @@ void Simulation::kill_part(int i)//kills particle number i
 // Returns true if the particle was killed
 bool Simulation::part_change_type(int i, int x, int y, int t)
 {
+	debug_interestingChangeOccurred = true;
+
 	if (x<0 || y<0 || x>=XRES || y>=YRES || i>=NPART || t<0 || t>=PT_NUM || !parts[i].type)
 		return false;
 	if (!elements[t].Enabled || t == PT_NONE)
@@ -3171,6 +3175,7 @@ bool Simulation::part_change_type(int i, int x, int y, int t)
 int Simulation::create_part(int p, int x, int y, int t, int v)
 {
 	int i, oldType = PT_NONE;
+	debug_interestingChangeOccurred = true;
 
 	if (x<0 || y<0 || x>=XRES || y>=YRES || t<=0 || t>=PT_NUM || !elements[t].Enabled)
 		return -1;
@@ -3462,6 +3467,8 @@ void Simulation::UpdateParticles(int start, int end)
 	int surround_hconduct[8];
 	float pGravX, pGravY, pGravD;
 	bool transitionOccurred;
+
+	debug_interestingChangeOccurred = false;
 
 	//the main particle loop function, goes over all particles.
 	for (i = start; i <= end && i <= parts_lastActiveIndex; i++)

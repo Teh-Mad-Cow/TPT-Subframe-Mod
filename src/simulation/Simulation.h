@@ -55,6 +55,7 @@ public:
 
 	char can_move[PT_NUM][PT_NUM];
 	int debug_currentParticle;
+	bool debug_interestingChangeOccurred;
 	int parts_lastActiveIndex;
 	int pfree;
 	int NUM_PARTS;
