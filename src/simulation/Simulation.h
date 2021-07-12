@@ -109,6 +109,7 @@ public:
 	int legacy_enable;
 	int aheat_enable;
 	int water_equal_test;
+	bool subframe_mode;
 	int sys_pause;
 	int framerender;
 	int pretty_powder;
@@ -161,6 +162,7 @@ public:
 	void set_emap(int x, int y);
 	int parts_avg(int ci, int ni, int t);
 	void create_arc(int sx, int sy, int dx, int dy, int midpoints, int variance, int type, int flags);
+	void CompleteDebugUpdateParticles();
 	void UpdateParticles(int start, int end);
 	void SimulateGoL();
 	void RecalcFreeParticles(bool do_life_dec);
