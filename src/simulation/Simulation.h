@@ -5,6 +5,7 @@
 #include <cstring>
 #include <cstddef>
 #include <vector>
+#include <map>
 #include <array>
 #include <memory>
 
@@ -52,6 +53,9 @@ public:
 	int currentTick;
 	int replaceModeSelected;
 	int replaceModeFlags;
+
+	// scratch space for stack reordering hacks
+	Particle stackReorderParts[NPART];
 
 	char can_move[PT_NUM][PT_NUM];
 	int debug_currentParticle;
@@ -167,6 +171,8 @@ public:
 	void UpdateParticles(int start, int end);
 	void SimulateGoL();
 	void RecalcFreeParticles(bool do_life_dec);
+	void FixSoapLinks(std::map<unsigned int, unsigned int> &soapList);
+	void ReloadParticleOrder();
 	void CheckStacking();
 	void BeforeSim();
 	void AfterSim();
