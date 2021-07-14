@@ -5275,6 +5275,15 @@ void Simulation::AfterSim()
 		Element_EMP_Trigger(this, emp_trigger_count);
 		emp_trigger_count = 0;
 	}
+
+	if (subframe_framerender)
+	{
+		subframe_framerender--;
+		if (subframe_framerender == 0)
+		{
+			subframe_mode = false;
+		}
+	}
 }
 
 Simulation::~Simulation()
@@ -5305,6 +5314,7 @@ Simulation::Simulation():
 	subframe_mode(false),
 	sys_pause(0),
 	framerender(0),
+	subframe_framerender(0),
 	pretty_powder(0),
 	sandcolour_frame(0),
 	deco_space(0)
