@@ -863,6 +863,7 @@ void LuaScriptInterface::initSimulationAPI()
 		{"listCustomGol", simulation_listCustomGol},
 		{"addCustomGol", simulation_addCustomGol},
 		{"removeCustomGol", simulation_removeCustomGol},
+		{"reloadParticleOrder", simulation_reloadParticleOrder},
 		{NULL, NULL}
 	};
 	luaL_register(l, "simulation", simulationAPIMethods);
@@ -2351,6 +2352,12 @@ int LuaScriptInterface::simulation_removeCustomGol(lua_State *l)
 		luacon_model->BuildMenus();
 	lua_pushboolean(l, removedAny);
 	return 1;
+}
+
+int LuaScriptInterface::simulation_reloadParticleOrder(lua_State * l)
+{
+	luacon_controller->ReloadParticleOrder();
+	return 0;
 }
 
 //// Begin Renderer API

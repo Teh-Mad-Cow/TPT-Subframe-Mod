@@ -117,6 +117,7 @@ class LuaScriptInterface: public CommandInterface
 	static int simulation_listCustomGol(lua_State *l);
 	static int simulation_addCustomGol(lua_State *l);
 	static int simulation_removeCustomGol(lua_State *l);
+	static int simulation_reloadParticleOrder(lua_State *l);
 
 
 	//Renderer
