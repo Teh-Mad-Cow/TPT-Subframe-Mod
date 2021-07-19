@@ -576,6 +576,7 @@ std::unique_ptr<Snapshot> Simulation::CreateSnapshot()
 	snap->stickmen       .push_back(player2);
 	snap->stickmen       .push_back(player);
 	snap->signs = signs;
+	snap->debug_currentParticle = debug_currentParticle;
 	return snap;
 }
 
@@ -615,6 +616,7 @@ void Simulation::Restore(const Snapshot &snap)
 	air->RecalculateBlockAirMaps();
 	RecalcFreeParticles(false);
 	gravWallChanged = true;
+	debug_currentParticle = snap.debug_currentParticle;
 }
 
 void Simulation::clear_area(int area_x, int area_y, int area_w, int area_h)
