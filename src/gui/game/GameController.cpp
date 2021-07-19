@@ -1511,6 +1511,16 @@ bool GameController::IsSubframeFrameStepComplete()
 	return gameModel->GetSubframeFrameStep() == 0;
 }
 
+bool GameController::IsFrameComplete()
+{
+	return gameModel->GetSimulation()->debug_currentParticle == 0;
+}
+
+bool GameController::AreParticlesInSubframeOrder()
+{
+	return gameModel->AreParticlesInSubframeOrder();
+}
+
 void GameController::Vote(int direction)
 {
 	if(gameModel->GetSave() && gameModel->GetUser().UserID && gameModel->GetSave()->GetID() && gameModel->GetSave()->GetVote()==0)
@@ -1581,6 +1591,12 @@ void GameController::ReloadParticleOrder()
 
 	String logmessage = String::Build("Particle order reloaded");
 	gameModel->Log(logmessage, false);
+}
+
+void GameController::ReloadParticleOrderIfNeeded()
+{
+	if (!IsFrameComplete() || !AreParticlesInSubframeOrder())
+		ReloadParticleOrder();
 }
 
 bool GameController::IsValidElement(int type)
