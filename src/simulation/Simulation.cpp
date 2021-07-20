@@ -597,6 +597,7 @@ void Simulation::Restore(const Snapshot &snap)
 	RecalcFreeParticles(false);
 	gravWallChanged = true;
 	debug_currentParticle = snap.debug_currentParticle;
+	needReloadParticleOrder = true;
 }
 
 void Simulation::clear_area(int area_x, int area_y, int area_w, int area_h)
@@ -1389,6 +1390,7 @@ int Simulation::Tool(int x, int y, int tool, int brushX, int brushY, float stren
 		cpart = &(parts[ID(r)]);
 	else if ((r = photons[y][x]))
 		cpart = &(parts[ID(r)]);
+	needReloadParticleOrder = true;
 	return tools[tool].Perform(this, cpart, x, y, brushX, brushY, strength);
 }
 
@@ -1811,6 +1813,9 @@ int Simulation::CreatePartFlags(int x, int y, int c, int flags)
 	{
 		return 0;
 	}
+
+	if (TYP(c) != PT_SPRK)
+		needReloadParticleOrder = true;
 
 	if (flags & REPLACE_MODE)
 	{
@@ -2288,6 +2293,7 @@ void Simulation::create_arc(int sx, int sy, int dx, int dy, int midpoints, int v
 void Simulation::clear_sim(void)
 {
 	debug_currentParticle = 0;
+	needReloadParticleOrder = false;
 	emp_decor = 0;
 	emp_trigger_count = 0;
 	signs.clear();
@@ -4904,6 +4910,7 @@ void Simulation::ReloadParticleOrder()
 	FixSoapLinks(soapList);
 	parts_lastActiveIndex = NPART-1;
 	RecalcFreeParticles(false);
+	needReloadParticleOrder = false;
 }
 
 void Simulation::SimulateGoL()
@@ -5367,6 +5374,7 @@ Simulation::Simulation():
 	replaceModeSelected(0),
 	replaceModeFlags(0),
 	debug_currentParticle(0),
+	needReloadParticleOrder(false),
 	ISWIRE(0),
 	force_stacking_check(false),
 	emp_decor(0),
