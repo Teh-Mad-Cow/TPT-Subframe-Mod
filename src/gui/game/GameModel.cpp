@@ -388,6 +388,7 @@ void GameModel::BuildMenus()
 	menuList[SC_TOOL]->AddTool(new WindTool(0, "WIND", "Creates air movement.", 64, 64, 64, "DEFAULT_UI_WIND"));
 	menuList[SC_TOOL]->AddTool(new PropertyTool(this));
 	menuList[SC_TOOL]->AddTool(new StackTool(this));
+	menuList[SC_TOOL]->AddTool(new ConfigTool(this));
 	menuList[SC_TOOL]->AddTool(new SignTool(this));
 	menuList[SC_TOOL]->AddTool(new SampleTool(this));
 	menuList[SC_LIFE]->AddTool(new GOLTool(this));
@@ -405,6 +406,14 @@ void GameModel::BuildMenus()
 	decoToolset[1] = GetToolFromIdentifier("DEFAULT_DECOR_CLR");
 	decoToolset[2] = GetToolFromIdentifier("DEFAULT_UI_SAMPLE");
 	decoToolset[3] = GetToolFromIdentifier("DEFAULT_PT_NONE");
+
+	ConfigTool *configTool = (ConfigTool*)GetToolFromIdentifier("DEFAULT_UI_CONFIG");
+	configTool->SetClearTool(GetToolFromIdentifier("DEFAULT_PT_NONE"));
+	configToolset[0] = configTool;
+	configToolset[1] = &configTool->releaseTool;
+	// Reserved for more complex configuration
+	configToolset[2] = GetToolFromIdentifier("DEFAULT_UI_SAMPLE");
+	configToolset[3] = GetToolFromIdentifier("DEFAULT_PT_NONE");
 
 	regularToolset[0] = GetToolFromIdentifier(activeToolIdentifiers[0]);
 	regularToolset[1] = GetToolFromIdentifier(activeToolIdentifiers[1]);
@@ -878,6 +887,7 @@ void GameModel::SetActiveMenu(int menuID)
 	toolList = menuList[menuID]->GetToolList();
 	notifyToolListChanged();
 
+	sim->configToolSampleActive = false;
 	if(menuID == SC_DECO)
 	{
 		if(activeTools != decoToolset)
@@ -929,6 +939,11 @@ Tool * GameModel::GetActiveTool(int selection)
 
 void GameModel::SetActiveTool(int selection, Tool * tool)
 {
+	sim->configToolSampleActive = false;
+	if (tool->GetIdentifier() == "DEFAULT_UI_CONFIG")
+		activeTools = configToolset;
+	else if (activeTools == configToolset)
+		activeTools = regularToolset;
 	activeTools[selection] = tool;
 	notifyActiveToolsChanged();
 }
