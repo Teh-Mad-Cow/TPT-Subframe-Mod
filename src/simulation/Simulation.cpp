@@ -180,6 +180,9 @@ int Simulation::Load(const GameSave * originalSave, bool includePressure, int fu
 		}
 	}
 
+	parts_lastActiveIndex = NPART-1;
+	RecalcFreeParticles(false);
+
 	int i;
 	// Map of soap particles loaded into this save, old ID -> new ID
 	std::map<unsigned int, unsigned int> soapList;
@@ -312,10 +315,8 @@ int Simulation::Load(const GameSave * originalSave, bool includePressure, int fu
 			parts[i].tmp3 = 0;
 		}
 	}
-	parts_lastActiveIndex = NPART-1;
 	force_stacking_check = true;
 	Element_PPIP_ppip_changed = 1;
-	RecalcFreeParticles(false);
 
 	// fix SOAP links using soapList, a map of old particle ID -> new particle ID
 	// loop through every old particle (loaded from save), and convert .tmp / .tmp2
