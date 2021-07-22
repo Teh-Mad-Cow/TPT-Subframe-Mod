@@ -1855,6 +1855,14 @@ int Simulation::CreatePartFlags(int x, int y, int c, int flags)
 		}
 		return 0;
 	}
+	else if (flags & STACK_MODE)
+	{
+		if (create_part(-3, x, y, TYP(c), ID(c)) == -1)
+		{
+			return 1;
+		}
+		return 0;
+	}
 	else
 	{
 		if (create_part(-2, x, y, TYP(c), ID(c)) == -1)
