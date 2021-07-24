@@ -17,6 +17,7 @@
 #include "BuiltinGOL.h"
 #include "MenuSection.h"
 #include "CoordStack.h"
+#include "Sample.h"
 
 #include "Element.h"
 
@@ -25,7 +26,6 @@
 class Snapshot;
 class SimTool;
 class Brush;
-class SimulationSample;
 struct matrix2d;
 struct vector2d;
 
@@ -56,6 +56,8 @@ public:
 
 	// scratch space for stack reordering hacks
 	Particle stackReorderParts[NPART];
+
+	SimulationSample sample;
 
 	char can_move[PT_NUM][PT_NUM];
 	int debug_currentParticle;
@@ -127,7 +129,7 @@ public:
 	GameSave * Save(bool includePressure);
 	GameSave * Save(bool includePressure, int x1, int y1, int x2, int y2);
 	void SaveSimOptions(GameSave * gameSave);
-	SimulationSample GetSample(int x, int y);
+	void UpdateSample(int x, int y);
 
 	std::unique_ptr<Snapshot> CreateSnapshot();
 	void Restore(const Snapshot &snap);
