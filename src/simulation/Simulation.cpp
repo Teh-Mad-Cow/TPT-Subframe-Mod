@@ -327,6 +327,8 @@ int Simulation::Load(const GameSave * originalSave, bool includePressure, int fu
 			sign tempSign = save->signs[i];
 			tempSign.x += fullX;
 			tempSign.y += fullY;
+			if (!InBounds(tempSign.x, tempSign.y))
+				continue;
 			signs.push_back(tempSign);
 		}
 	}
@@ -334,6 +336,8 @@ int Simulation::Load(const GameSave * originalSave, bool includePressure, int fu
 	{
 		for(int saveBlockY = 0; saveBlockY < save->blockHeight; saveBlockY++)
 		{
+			if (!InBounds((saveBlockX + blockX) * CELL, (saveBlockY + blockY) * CELL))
+				continue;
 			if(save->blockMap[saveBlockY][saveBlockX])
 			{
 				bmap[saveBlockY+blockY][saveBlockX+blockX] = save->blockMap[saveBlockY][saveBlockX];
