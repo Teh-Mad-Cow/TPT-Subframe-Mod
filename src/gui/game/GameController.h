@@ -133,6 +133,7 @@ public:
 	SimulationSample * GetSample();
 	int GetParticleDebugPosition();
 	ConfigTool * GetActiveConfigTool();
+	void ToggleConfigTool();
 	int GetStackEditDepth();
 	void SetStackEditDepth(int depth);
 	void AdjustStackEditDepth(int ddepth);
