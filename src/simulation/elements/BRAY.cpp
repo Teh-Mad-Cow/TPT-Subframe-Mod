@@ -52,7 +52,7 @@ static int graphics(GRAPHICS_FUNC_ARGS)
 	int x, trans = 255;
 	if(cpart->tmp==0)
 	{
-		trans = cpart->life * 7;
+		trans = cpart->life * 7 + 100;
 		if (trans>255) trans = 255;
 		if (cpart->ctype&0x3FFFFFFF) {
 			*colg = 0;
