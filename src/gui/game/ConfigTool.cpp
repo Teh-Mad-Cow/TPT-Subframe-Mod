@@ -397,16 +397,16 @@ void ConfigTool::drawWhiteLine(Renderer *ren, int startx, int starty, int endx, 
 
 void ConfigTool::drawTripleLine(Renderer *ren, int firstLineLen, int midLineLen, bool drawFirstLine, bool drawThirdLine)
 {
-	int mid1x = configPart.x + dirx * firstLineLen,
-		mid1y = configPart.y + diry * firstLineLen;
+	int mid1x = configPart.x + dirx * (drawFirstLine ? firstLineLen : 0),
+		mid1y = configPart.y + diry * (drawFirstLine ? firstLineLen : 0);
 	int mid2x = mid1x + dirx * midLineLen,
 		mid2y = mid1y + diry * midLineLen;
 	if (drawFirstLine && firstLineLen > 0)
-		drawWhiteLine(ren, configPart.x + dirx, configPart.y + diry, mid1x, mid1y);
+		drawRedLine(ren, configPart.x + dirx, configPart.y + diry, mid1x, mid1y);
 	if (midLineLen > 0)
-		drawRedLine(ren, mid1x + dirx, mid1y + diry, mid2x, mid2y);
+		drawWhiteLine(ren, mid1x + dirx, mid1y + diry, mid2x, mid2y);
 	if (drawThirdLine && firstLineLen > 0)
-		drawWhiteLine(ren, mid2x + dirx, mid2y + diry, mid2x + dirx * firstLineLen, mid2y + diry * firstLineLen);
+		drawRedLine(ren, mid2x + dirx, mid2y + diry, mid2x + dirx * firstLineLen, mid2y + diry * firstLineLen);
 }
 
 void ConfigTool::drawSquareRdBox(Renderer *ren)
@@ -453,10 +453,10 @@ void ConfigTool::DrawHUD(Renderer *ren)
 						drawTripleLine(ren, configPart.tmp, configPart.tmp2);
 						break;
 					case PT_CRAY:
-						drawTripleLine(ren, configPart.tmp2, configPart.tmp, true, false);
+						drawTripleLine(ren, configPart.tmp, configPart.tmp2, false, true);
 						break;
 					case PT_LDTC:
-						drawTripleLine(ren, configPart.life, configPart.tmp, true, false);
+						drawTripleLine(ren, configPart.tmp, configPart.life, false, true);
 						break;
 					}
 				}
