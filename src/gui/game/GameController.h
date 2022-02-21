@@ -135,6 +135,7 @@ public:
 	ConfigTool * GetActiveConfigTool();
 	int GetStackEditDepth();
 	void SetStackEditDepth(int depth);
+	void AdjustStackEditDepth(int ddepth);
 	int GetReplaceModeFlags();
 	void SetReplaceModeFlags(int flags);
 	void SetActiveColourPreset(int preset);
