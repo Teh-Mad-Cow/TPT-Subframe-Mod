@@ -2346,6 +2346,15 @@ void GameView::OnDraw()
 					rbrace = String::Build("]"),
 					noneString = String::Build("");
 
+				bool isConfiguringTemp = isConfigToolTarget &&
+					configTool->IsConfiguringTemp();
+				bool isConfiguringLife = isConfigToolTarget &&
+					configTool->IsConfiguringLife();
+				bool isConfiguringTmp = isConfigToolTarget &&
+					configTool->IsConfiguringTmp();
+				bool isConfiguringTmp2 = isConfigToolTarget &&
+					configTool->IsConfiguringTmp2();
+
 				if (type == PT_LAVA && c->IsValidElement(ctype))
 				{
 					sampleInfo << "Molten " << c->ElementResolve(ctype, 0);
@@ -2391,8 +2400,23 @@ void GameView::OnDraw()
 					else if (type == PT_CRAY && TYP(ctype) == PT_FILT && ID(ctype) < FILT_NUM_MODES)
 						sampleInfo << " (FILT, " << FILT_MODES[ID(ctype)] << ")";
 					// Some elements store extra LIFE info in upper bits of ctype, instead of tmp/tmp2
-					else if (type == PT_CRAY || type == PT_DRAY || type == PT_CONV || type == PT_LDTC)
+					else if (type == PT_CRAY || type == PT_DRAY || type == PT_LDTC)
 						sampleInfo << " (" << c->ElementResolve(TYP(ctype), ID(ctype)) << ")";
+					else if (type == PT_CONV)
+					{
+						sampleInfo << " (";
+						String tmpElemName = c->ElementResolve(
+							TYP(sparticle.tmp), ID(sparticle.tmp)
+						);
+						if (tmpElemName != "")
+							sampleInfo <<
+								(isConfiguringTmp ? lbrace : noneString) <<
+								tmpElemName <<
+								(isConfiguringTmp ? rbrace : noneString) <<
+								" > ";
+						sampleInfo << c->ElementResolve(TYP(ctype), ID(ctype));
+						sampleInfo << ")";
+					}
 					else if (type == PT_CLNE || type == PT_BCLN || type == PT_PCLN || type == PT_PBCN || type == PT_DTEC)
 						sampleInfo << " (" << c->ElementResolve(ctype, sparticle.tmp) << ")";
 					else if (c->IsValidElement(ctype) && type != PT_GLOW && type != PT_WIRE && type != PT_SOAP && type != PT_LITH)
@@ -2401,14 +2425,6 @@ void GameView::OnDraw()
 						sampleInfo << " (" << ctype << ")";
 				}
 
-				bool isConfiguringTemp = isConfigToolTarget &&
-					configTool->IsConfiguringTemp();
-				bool isConfiguringLife = isConfigToolTarget &&
-					configTool->IsConfiguringLife();
-				bool isConfiguringTmp = isConfigToolTarget &&
-					configTool->IsConfiguringTmp();
-				bool isConfiguringTmp2 = isConfigToolTarget &&
-					configTool->IsConfiguringTmp2();
 				sampleInfo << ", " <<
 					(isConfiguringTemp ? lbrace : noneString) <<
 					(sparticle.temp - 273.15f) << " C" <<
@@ -2427,13 +2443,7 @@ void GameView::OnDraw()
 						": ";
 					if (type == PT_CONV)
 					{
-						String elemName = c->ElementResolve(
-							TYP(sparticle.tmp),
-							ID(sparticle.tmp));
-						if (elemName == "")
-							sampleInfo << sparticle.tmp;
-						else
-							sampleInfo << elemName;
+						sampleInfo << sparticle.tmp;
 					}
 					else
 						sampleInfo << sparticle.tmp;
